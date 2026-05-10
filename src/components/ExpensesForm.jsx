@@ -5,10 +5,12 @@ export function ExpensesForm({ onSubmitExpenseItem }) {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
+  // const [id, setId] = useState("");
 
   function onSubmitForm(e) {
     e.preventDefault();
     const newExpenseItem = {
+      id: Date.now(),
       name: name,
       amount: amount,
       category: category,
