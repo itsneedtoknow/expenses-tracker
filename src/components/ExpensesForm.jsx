@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./ExpensesForm.module.css";
 
 export function ExpensesForm({ onSubmitExpenseItem }) {
   const [name, setName] = useState("");
@@ -19,7 +20,7 @@ export function ExpensesForm({ onSubmitExpenseItem }) {
   }
 
   return (
-    <div className="expenses__form">
+    <div className={styles.expenses__form}>
       <div className="container-wrapper">
         <h2>Добавить расход</h2>
         <form onSubmit={(e) => onSubmitForm(e)}>

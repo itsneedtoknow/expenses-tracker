@@ -9,17 +9,17 @@ function App() {
   const [DashboardValue, setDashboardValue] = useState(0);
 
   const [FormData, setFormData] = useState([]);
-  // function submitExpenseHandler(newFormData) {
-  //   const updatedFormData = [...FormData, newFormData];
-  //   setFormData(updatedFormData);
-  // }
-  // useEffect(() => {
-  //   const total = FormData.reduce(
-  //     (result, item) => result + Number(item.amount),
-  //     0,
-  //   );
-  //   setDashboardValue(total);
-  // }, [FormData]);
+  function submitExpenseHandler(newFormData) {
+    const updatedFormData = [...FormData, newFormData];
+    setFormData(updatedFormData);
+  }
+  useEffect(() => {
+    const total = FormData.reduce(
+      (result, item) => result + Number(item.amount),
+      0,
+    );
+    setDashboardValue(total);
+  }, [FormData]);
   return (
     <>
       <ExpensesDashBoard dashboardValue={DashboardValue} />

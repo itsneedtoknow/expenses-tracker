@@ -49,7 +49,9 @@
     filter: invert(1) brightness(2);
   }
 }
-
+* {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
 }
@@ -120,4 +122,22 @@ button {
   color: white;
   border-radius: 8px;
   font-size: 1rem;
+  cursor: pointer;
+  transition: 0.4s ease;
+}
+input,
+select {
+  height: 48px;
+  margin: 0 16px;
+  border-radius: 8px;
+  padding: 8px 16px;
+  border-color: lightslategray;
+}
+select {
+  appearance: none;
+
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 18px;
 }

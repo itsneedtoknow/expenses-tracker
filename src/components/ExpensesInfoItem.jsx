@@ -5,7 +5,7 @@ export function ExpensesInfoItem({ expense }) {
   return (
     <>
       {console.log(expense)}
-      <div className="expense__item">
+      <div className={styles.expense__item}>
         <p className="expense__name">{expense.name}</p>
         <p className="expense__category">{expense.category}</p>
         <p className="expense__amount">{expense.amount}</p>
