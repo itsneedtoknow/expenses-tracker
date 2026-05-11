@@ -1,8 +1,9 @@
 import { Categories } from "../data/categories";
 import { Months } from "../data/calendar";
+import styles from "./ExpensesInfoFilter.module.css";
 export function ExpensesInfoFilter() {
   return (
-    <div className="expenses__filter">
+    <div className={styles.expenses__filter}>
       <h3>Показать</h3>
       <select>
         <option value="" disabled>
