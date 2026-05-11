@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./ExpensesForm.module.css";
 import { Categories } from "../data/categories";
+import { Select } from "../UI/Select";
 
 export function ExpensesForm({ onSubmitExpenseItem }) {
   const [name, setName] = useState("");
@@ -47,21 +48,16 @@ export function ExpensesForm({ onSubmitExpenseItem }) {
             onChange={(e) => setAmount(e.target.value)}
             required
           />
-          <select
+          <Select
             id="category"
             defaultValue=""
+            options={Categories}
+            defaultText={"Выберите категорию"}
             value={category}
             category={category}
             onChange={(e) => setCategory(e.target.value)}
             required
-          >
-            <option value="" disabled>
-              Выберите категорию
-            </option>
-            {Categories.map((item) => {
-              return <option value={item.id}>{item.label}</option>;
-            })}
-          </select>
+          />
           <br />
           <button type="submit">Добавить</button>
         </form>
