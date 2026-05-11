@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./ExpensesForm.module.css";
+import { Categories } from "../data/categories";
 
 export function ExpensesForm({ onSubmitExpenseItem }) {
   const [name, setName] = useState("");
@@ -9,12 +10,16 @@ export function ExpensesForm({ onSubmitExpenseItem }) {
 
   function onSubmitForm(e) {
     e.preventDefault();
+    let dateofSubmit = new Date();
     const newExpenseItem = {
       id: Date.now(),
+      month: dateofSubmit.getMonth() + 1,
+      date: dateofSubmit.getDate(),
       name: name,
       amount: amount,
       category: category,
     };
+    console.log(newExpenseItem);
     onSubmitExpenseItem(newExpenseItem);
     setName("");
     setAmount("");
@@ -32,13 +37,15 @@ export function ExpensesForm({ onSubmitExpenseItem }) {
             name={name}
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
           <input
-            type="text"
+            type="number"
             placeholder="Сумма"
             amount={amount}
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
+            required
           />
           <select
             id="category"
@@ -46,15 +53,14 @@ export function ExpensesForm({ onSubmitExpenseItem }) {
             value={category}
             category={category}
             onChange={(e) => setCategory(e.target.value)}
+            required
           >
             <option value="" disabled>
               Выберите категорию
             </option>
-            <option value="house">Дом/Дача</option>
-            <option value="car">Машина</option>
-            <option value="credit">Кредит</option>
-            <option value="food">Продукты</option>
-            <option value="other">Другое</option>
+            {Categories.map((item) => {
+              return <option value={item.id}>{item.label}</option>;
+            })}
           </select>
           <br />
           <button type="submit">Добавить</button>

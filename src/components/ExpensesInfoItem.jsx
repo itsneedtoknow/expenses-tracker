@@ -10,8 +10,8 @@ export function ExpensesInfoItem({ expense, onDeleteBtn }) {
       {/* {console.log(expense)} */}
       <div className={styles.expense__item}>
         <p className="expense__name">{expense.name}</p>
-        <p className="expense__category">{expense.category}</p>
-        <p className="expense__amount">{expense.amount}</p>
+        {/* <p className="expense__category">{expense.category}</p> */}
+        <p className="expense__amount">{expense.amount} руб.</p>
         <Button
           className={styles.expense__button}
           type="button"

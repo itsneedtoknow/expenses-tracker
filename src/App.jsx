@@ -1,14 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./App.css";
 import { ExpensesDashBoard } from "./components/ExpensesDashboad";
 import { ExpensesForm } from "./components/ExpensesForm";
 import { ExpensesInfo } from "./components/ExpensesInfo";
+import { Months, MonthsGenitive } from "./data/calendar";
 
 function App() {
-  //const [DashboardValue, setDashboardValue] = useState(0);
+  //const [FormData, setFormData] = useState([]);
+  const [FormData, setFormData] = useState(() => {
+    const saved = localStorage.getItem("expenses");
+    return saved ? JSON.parse(saved) : [];
+  });
+  //const [day, setDay] = useState();
 
-  const [FormData, setFormData] = useState([]);
+  const date = new Date();
+  const monthIndex = date.getMonth() + 1;
+  const day = date.getDate();
+  const today = `${day} ${MonthsGenitive[monthIndex]}`;
+  const currentMonth = Months[monthIndex];
+
+  useEffect(() => {
+    if (FormData.length > 0) {
+      localStorage.setItem("expenses", JSON.stringify(FormData));
+    }
+  }, [FormData]);
   function submitExpenseHandler(newFormData) {
     const updatedFormData = [...FormData, newFormData];
     setFormData(updatedFormData);
@@ -17,23 +33,23 @@ function App() {
     setFormData(
       FormData.filter((item) => {
         return item.id !== id;
-        //console.log(item.id);
       }),
     );
-    //const updatedFormData = [...FormData, newFormData];
   }
-  //useEffect(() => {
   const dashboardValue = FormData.reduce(
     (result, item) => result + Number(item.amount),
     0,
   );
-  //setDashboardValue(total);
-  //}, [FormData]);
   return (
     <>
       <ExpensesDashBoard dashboardValue={dashboardValue} />
       <ExpensesForm onSubmitExpenseItem={submitExpenseHandler} />
-      <ExpensesInfo expenses={FormData} onDeleteBtn={deleteBtnHandler} />
+      <ExpensesInfo
+        expenses={FormData}
+        onDeleteBtn={deleteBtnHandler}
+        today={today}
+        currentMonth={currentMonth}
+      />
     </>
   );
 }
