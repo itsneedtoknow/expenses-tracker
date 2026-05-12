@@ -1,0 +1,7 @@
+.expenses__filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 50%;
+  margin: 0 auto;
+}
