@@ -4,4 +4,13 @@ export const Categories = [
   { id: "credit", label: "Кредит" },
   { id: "food", label: "Продукты" },
   { id: "other", label: "Другое" },
+  { id: "hygiene", label: "Гигиена" },
+  { id: "pets", label: "Питомцы" },
+  { id: "entertainment", label: "Развлечения" },
+  { id: "alcohol", label: "Алкоголь" },
+  { id: "drugs", label: "Лекарства" },
+  { id: "savings", label: "Сбережения" },
+  { id: "travel", label: "Путешествия" },
+  { id: "presents", label: "Подарки" },
+  { id: "clothes", label: "Одежда" },
 ];
