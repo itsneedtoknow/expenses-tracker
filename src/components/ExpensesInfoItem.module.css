@@ -1,0 +1,9 @@
+.expense__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9f9f2;
+  color: black;
+  padding: 16px 24px;
+  border-radius: 8px;
+}

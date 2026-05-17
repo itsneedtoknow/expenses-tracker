@@ -1,122 +1,87 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useState } from "react";
+
+import "./App.css";
+import { ExpensesDashBoard } from "./components/ExpensesDashboad";
+import { ExpensesForm } from "./components/ExpensesForm";
+import { ExpensesInfo } from "./components/ExpensesInfo";
+import { ExpensesInfoFilter } from "./components/ExpensesInfoFilter";
+import { Months, MonthsGenitive } from "./data/calendar";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [FormData, setFormData] = useState(() => {
+    const saved = localStorage.getItem("expenses");
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [month, setMonth] = useState();
+  const [category, setCategory] = useState();
+  /*Отфильтрованные расходы*/
+  const filteredExpenses = FormData.filter((item) => {
+    const monthMatch = month ? month === String(item.month) : true;
+    const categoryMatch = category ? category === item.category : true;
+
+    return monthMatch && categoryMatch;
+  });
+
+  /*Группировка по месяцу и дню */
+  const groupedExpenses = filteredExpenses.reduce((acc, item) => {
+    const monthName = Months[item.month];
+
+    const dayName = `${item.date} ${MonthsGenitive[item.month]}`;
+
+    if (!acc[monthName]) acc[monthName] = {};
+
+    if (!acc[monthName][dayName]) acc[monthName][dayName] = [];
+
+    acc[monthName][dayName].push(item);
+    return acc;
+  }, {});
+
+  const date = new Date();
+  const monthIndex = date.getMonth() + 1;
+  const day = date.getDate();
+  const today = `${day} ${MonthsGenitive[monthIndex]}`;
+  const currentMonth = Months[monthIndex];
+
+  useEffect(() => {
+    if (FormData.length > 0) {
+      localStorage.setItem("expenses", JSON.stringify(FormData));
+    }
+  }, [FormData]);
+  function submitExpenseHandler(newFormData) {
+    const updatedFormData = [...FormData, newFormData];
+    setFormData(updatedFormData);
+  }
+  function deleteBtnHandler(id) {
+    setFormData(
+      FormData.filter((item) => {
+        return item.id !== id;
+      }),
+    );
+  }
+  const dashboardValue = filteredExpenses.reduce(
+    (result, item) => result + Number(item.amount),
+    0,
+  );
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      <ExpensesDashBoard dashboardValue={dashboardValue} />
+      <ExpensesForm onSubmitExpenseItem={submitExpenseHandler} />
+      <ExpensesInfoFilter
+        selectedMonth={month}
+        onMonthChange={(e) => setMonth(e.target.value)}
+        selectedCategory={category}
+        onCategoryChange={(e) => setCategory(e.target.value)}
+      />
+      <ExpensesInfo
+        groupedExpenses={groupedExpenses}
+        expenses={filteredExpenses}
+        onDeleteBtn={deleteBtnHandler}
+        today={today}
+        currentMonth={currentMonth}
+      />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
